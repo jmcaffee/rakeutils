@@ -66,6 +66,22 @@ class CLApp
     end # normalizeDirPath
   
 
+    # Convert windows path seperators to ruby (backslash to forward slash).
+    # path:: path to convert
+    # returns:: converted path
+    def rubyizePath(path)
+        return path.gsub(/\\/, "/")
+    end # rubyizePath
+
+  
+    # Convert ruby path seperators to windows ( forward slash to backslash).
+    # path:: path to convert
+    # returns:: converted path
+    def windowizePath(path)
+        return path.gsub(/\//, "\\")
+    end # windowizePath
+  
+    
     # Execute application.
     # cmdLine:: Command line to pass to the application
     # canThrow:: If true, throw exception if command fails.
