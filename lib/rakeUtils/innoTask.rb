@@ -9,8 +9,8 @@
 ######################################################################################
 
 =begin
-tex2rtf command line:
-m:\Inno5\ISCC.exe /OOutPutDir /FOutputBaseFileName SCRIPT
+InnoSetup command line:
+m:\Inno5.3.5\ISCC.exe /OOutPutDir /FOutputBaseFileName SCRIPT
 =end
 
 # Implements programmatic control of the InnoSetup5 application.
@@ -18,7 +18,7 @@ m:\Inno5\ISCC.exe /OOutPutDir /FOutputBaseFileName SCRIPT
 class InnoTask < CLApp
 include FileUtils
 
-    APP_PATH = "M:/Inno5/ISCC.exe"
+    APP_PATH = "M:/Inno5.3.5/ISCC.exe"
 
   
     # Constructor

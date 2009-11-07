@@ -97,4 +97,4 @@ class CLApp
     end # execute
 
 
-end # class Tex2Rtf
+end # class CLApp
