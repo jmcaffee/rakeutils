@@ -32,7 +32,7 @@ class DataFile
     @rootDir = rootDir
     
     if( rootDir )
-        @rootDir = convertPathToRuby(@rootDir)
+        @rootDir = File.rubypath(@rootDir)
         if( !File.exists?(@rootDir))
           #$LOG.debug "Creating directory: #{@rootDir}"
           FileUtils.mkdir(@rootDir)
@@ -67,16 +67,6 @@ class DataFile
     data
   end
   
-  
-  def convertPathToRuby(path)
-    return path.gsub(/\\/, "/")
-  end # convertPathToRuby
-  
-  
-  def convertPathToWin(path)
-    return path.gsub(/\//, "\\")
-  end # convertPathToWin
-
   
 end # class DataFile
 
