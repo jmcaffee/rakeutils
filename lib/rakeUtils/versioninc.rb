@@ -13,9 +13,10 @@
 class VersionIncrementer
 include FileUtils
 
-    # Constructor
-    def initialize()
+    # If optional filename is supplied, load the version from the file.
+    def initialize(filename=nil)
         @version = [0,0,0]
+		read(filename) unless filename.nil?
     end # initialize
 
 
