@@ -9,7 +9,7 @@
 
 
 
-require 'parseTemplate'   # r:\tools\ruby\webutils\lib\parseTemplate
+require 'webutils/parseTemplate'   # r:\tools\ruby\webutils\lib\parseTemplate
 require 'yaml'
 require 'fileutils'
 =begin
