@@ -8,11 +8,12 @@
 ######################################################################################
 
 require 'rubygems'
-require 'rake/gempackagetask'
+require 'psych'
+gem 'rdoc', '>= 3.9.4'
 
 require 'rake'
 require 'rake/clean'
-require 'rake/rdoctask'
+require 'rdoc/task'
 require 'ostruct'
 #require 'rakeUtils'
 
@@ -61,24 +62,25 @@ end
 
 
 #############################################################################
-Rake::RDocTask.new do |rdoc|
+RDoc::Task.new(:rdoc) do |rdoc|
     files = ['docs/**/*.rdoc', 'lib/**/*.rb', 'app/**/*.rb']
     rdoc.rdoc_files.add( files )
     rdoc.main = "docs/README.rdoc"           	# Page to start on
 	#puts "PWD: #{FileUtils.pwd}"
     rdoc.title = "#{PROJNAME} Documentation"
     rdoc.rdoc_dir = 'doc'                   # rdoc output folder
-    rdoc.options << '--line-numbers' << '--inline-source' << '--all'
+    rdoc.options << '--line-numbers' << '--all'
 end
 
 
 #############################################################################
-spec = Gem::Specification.new do |s|
+SPEC = Gem::Specification.new do |s|
 	s.platform = Gem::Platform::RUBY
 	s.summary = "Rake Utility classes"
 	s.name = PROJNAME.downcase
 	s.version = PKG_VERSION
 	s.requirements << 'none'
+	s.bindir = 'bin'
 	s.require_path = 'lib'
 	#s.autorequire = 'rake'
 	s.files = PKG_FILES
@@ -93,15 +95,22 @@ end
 
 
 #############################################################################
-Rake::GemPackageTask.new(spec) do |pkg|
-	pkg.need_zip = true
-	pkg.need_tar = true
-	
-	puts "PKG_VERSION: #{PKG_VERSION}"
-#=begin		
-	puts "PKG_FILES:"
-	PKG_FILES.each do |f|
-		puts "  #{f}"
+desc "Run all tests"
+task :test => [:init] do
+	unless File.directory?('test')
+		$stderr.puts 'no test in this package'
+		return
 	end
-#=end
+	$stderr.puts 'Running tests...'
+	begin
+		require 'test/unit'
+	rescue LoadError
+		$stderr.puts 'test/unit cannot loaded.  You need Ruby 1.8 or later to invoke this task.'
+	end
+	
+	$LOAD_PATH.unshift("./")
+	$LOAD_PATH.unshift(TESTDIR)
+	Dir[File.join(TESTDIR, "*.rb")].each {|file| require File.basename(file) }
+	require 'minitest/autorun'
 end
+
