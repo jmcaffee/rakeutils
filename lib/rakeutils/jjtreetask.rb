@@ -79,8 +79,10 @@ include FileUtils
 
         begin
             execute( cmdLine, false )
-        rescue
+        rescue Exception => e
             puts "!!! Errors occured during parsing of JJTree grammar."
+            puts e.message
+            exit
         end
     end # generate
 

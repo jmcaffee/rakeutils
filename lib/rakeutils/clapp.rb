@@ -89,7 +89,10 @@ class CLApp
     def execute(cmdLine, canThrow=true)
         appCmd = "#{@appPath} #{cmdLine}"
         puts "Executing: #{appCmd}"
-    
+        if( !File.exists?(@appPath) )
+          raise "Invalid application path: #{@appPath}"
+        end
+          
         if( !Kernel.system("#{appCmd}") && canThrow )
             raise "Application threw an exception for the command: ".concat(appCmd)
         end
