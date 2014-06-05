@@ -13,6 +13,8 @@ ocra.rb command line:
 ruby.exe -S ocra.rb SCRIPT
 =end
 
+require 'ktutils/os'
+
 require_relative 'clapp'
 
 # Implements programmatic control of the OCRA application.
