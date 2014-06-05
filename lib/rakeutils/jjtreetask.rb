@@ -14,12 +14,18 @@ jjtree.bat command line:
 jjtree [OPTIONS] GRAMMAR_FILE
 =end
 
+require 'ktutils/os'
+
 # Implements programmatic control of the JJTree application.
 
 class JJTreeTask < CLApp
 include FileUtils
 
-  APP_PATH = "M:/javacc/bin/jjtree.bat"
+  if Ktutils::OS.windows?
+    APP_PATH = "M:/javacc/bin/jjtree.bat"
+  else
+    APP_PATH = `which jjtree`.chomp
+  end
 
   # Constructor
   def initialize()
