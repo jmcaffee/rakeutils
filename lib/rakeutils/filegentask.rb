@@ -10,7 +10,7 @@
 require 'yaml'
 require 'fileutils'
 
-require 'webutils/parseTemplate'
+require 'ktutils/parse_template'
 
 class DataFile
 
