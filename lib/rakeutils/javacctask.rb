@@ -12,13 +12,18 @@
 javacc.bat command line:
 javacc [OPTIONS] GRAMMAR_FILE
 =end
+require 'ktutils/os'
 
 # Implements programmatic control of the JavaCC application.
 
 class JavaCCTask < CLApp
 include FileUtils
 
-  APP_PATH = "M:/javacc/bin/javacc.bat"
+  if Ktutils::OS.windows?
+    APP_PATH = "M:/javacc/bin/javacc.bat"
+  else
+    APP_PATH = `which javacc`.chomp
+  end
 
   # Constructor
   def initialize()
