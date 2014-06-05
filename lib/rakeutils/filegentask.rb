@@ -105,7 +105,7 @@ class FileGenTask
   # src:: source template file
   # dest:: Destination filename and path
   def parseSrcTo(src, dest)
-    pt = ParseTemplate.new(@startDelim, @stopDelim)
+    pt = Ktutils::ParseTemplate.new(@startDelim, @stopDelim)
 
     @data.each do |t, v|
       pt.add_token( t, v )
