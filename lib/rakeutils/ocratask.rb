@@ -1,7 +1,7 @@
 ##############################################################################
 # File:: ocraTask.rb
 # Purpose:: Run OCRA against a ruby source tree
-# 
+#
 # Author::    Jeff McAffee 10/29/2009
 # Copyright:: Copyright (c) 2009 kTech Systems LLC. All rights reserved.
 # Website::   http://ktechsystems.com
@@ -18,28 +18,24 @@ ruby.exe -S ocra.rb SCRIPT
 class OcraTask < CLApp
 include FileUtils
 
-    APP_PATH = "N:/Ruby/bin/ruby.exe"
+  APP_PATH = "N:/Ruby/bin/ruby.exe"
 
-  
-    # Constructor
-    def initialize()
-        super( APP_PATH )   # Call parent constructor.
-    end # initialize
+  # Constructor
+  def initialize()
+    super( APP_PATH )   # Call parent constructor.
+  end # initialize
 
+  # Generate executable application from a ruby script.Compile setup script.
+  # script:: Script to be compiled
+  def compile(script)
+    puts "Compiling script: #{script}"
 
-    # Generate executable application from a ruby script.Compile setup script.
-    # script:: Script to be compiled
-    def compile(script)
-        puts "Compiling script: #{script}"
-        
-        cmdLine = "ocra.rb --windows #{script}"
+    cmdLine = "ocra.rb --windows #{script}"
 
-        begin
-            execute( cmdLine, false )
-        rescue
-            puts "!!! Errors occured during compilation of setup script."
-        end
-    end # compile
-
-
+    begin
+      execute( cmdLine, false )
+    rescue
+      puts "!!! Errors occured during compilation of setup script."
+    end
+  end # compile
 end # class OcraTask
