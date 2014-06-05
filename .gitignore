@@ -3,3 +3,4 @@ install.cmd
 buildgem
 buildgem.cmd
 /pkg
+Gemfile.lock
