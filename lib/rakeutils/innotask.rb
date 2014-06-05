@@ -13,8 +13,9 @@ InnoSetup command line:
 m:\Inno5.3.5\ISCC.exe /OOutPutDir /FOutputBaseFileName SCRIPT
 =end
 
-# Implements programmatic control of the InnoSetup5 application.
+require_relative 'clapp'
 
+# Implements programmatic control of the InnoSetup5 application.
 class InnoTask < CLApp
 include FileUtils
 

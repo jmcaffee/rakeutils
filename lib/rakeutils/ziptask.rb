@@ -13,6 +13,8 @@ tex2rtf command line:
 m:\7Zip\7za.exe -tzip u ARCHIVENAME SOURCEDIR/FILENAME
 =end
 
+require_relative 'clapp'
+
 # Implements programmatic control of the 7Zip application.
 
 class ZipTask < CLApp

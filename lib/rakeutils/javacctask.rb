@@ -14,6 +14,8 @@ javacc [OPTIONS] GRAMMAR_FILE
 =end
 require 'ktutils/os'
 
+require_relative 'clapp'
+
 # Implements programmatic control of the JavaCC application.
 
 class JavaCCTask < CLApp

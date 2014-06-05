@@ -13,12 +13,17 @@ ocra.rb command line:
 ruby.exe -S ocra.rb SCRIPT
 =end
 
-# Implements programmatic control of the OCRA application.
+require_relative 'clapp'
 
+# Implements programmatic control of the OCRA application.
 class OcraTask < CLApp
 include FileUtils
 
-  APP_PATH = "N:/Ruby/bin/ruby.exe"
+  if Ktutils::OS.windows?
+    APP_PATH = "N:/Ruby/bin/ruby.exe"
+  else
+    APP_PATH = `which ruby`.chomp
+  end
 
   # Constructor
   def initialize()

@@ -13,7 +13,7 @@ tex2rtf command line:
 m:\tex2rtf\tex2rtf.exe easydocs.tex easydocshelp.html -checkcurleybraces -checksyntax -html
 =end
 
-require 'clApp'
+require_relative 'clapp'
 # Implements programmatic control of the Tex2Rtf application.
 
 class Tex2Rtf < CLApp
