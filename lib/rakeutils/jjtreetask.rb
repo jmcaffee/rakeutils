@@ -16,8 +16,6 @@ jjtree [OPTIONS] GRAMMAR_FILE
 
 require 'ktutils/os'
 
-require_relative 'clapp'
-
 # Implements programmatic control of the JJTree application.
 
 class JJTreeTask < CLApp
