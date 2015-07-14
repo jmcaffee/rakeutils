@@ -19,38 +19,33 @@ require_relative 'clapp'
 class InnoTask < CLApp
 include FileUtils
 
-    APP_PATH = "M:/Inno5.3.5/ISCC.exe"
+  APP_PATH = "M:/Inno5.3.5/ISCC.exe"
 
-  
-    # Constructor
-    def initialize()
-        super( APP_PATH )   # Call parent constructor.
-    end # initialize
+  # Constructor
+  def initialize()
+      super( APP_PATH )   # Call parent constructor.
+  end # initialize
 
+  # Compile setup script.
+  #
+  # dest_dir:: destination directory
+  # filename:: Output base filename
+  # script:: Script to be compiled
+  def compile(dest_dir, filename, script)
+    dest_dir = File.expand_path( dest_dir )
+    script = File.expand_path( script )
+    # Make sure the paths are in windows format for the compiler.
+    dest_dir = windowize_path( dest_dir )
+    script = windowize_path( script )
 
-    # Compile setup script.
-    # destDir:: destination directory
-    # filename:: Output base filename
-    # script:: Script to be compiled
-    def compile(destDir, filename, script)
-        destDir = File.expand_path( destDir )
-        script = File.expand_path( script )
-        
-        destDir = windowizePath( destDir )      # Make sure the paths are in windows format for the compiler.
-        script = windowizePath( script )
-        
-        puts "destDir: #{destDir}"
-        puts "filename: #{filename}"
-        puts "script: #{script}"
-        
-        cmdLine = "/O#{destDir} /F#{filename} #{script}"
+    puts "dest_dir: #{dest_dir}"
+    puts "filename: #{filename}"
+    puts "script: #{script}"
 
-        begin
-            execute( cmdLine, false )
-        rescue
-            puts "!!! Errors occured during compilation of setup script."
-        end
-    end # compile
-
-
+    begin
+      execute( cmdLine, false )
+    rescue
+      puts "!!! Errors occured during compilation of setup script."
+    end
+  end # compile
 end # class InnoTask
