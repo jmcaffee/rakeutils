@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description   = %q{Rake Utility classes}
   spec.summary       = %q{Rake Utility classes}
   spec.homepage      = "http://gems.ktechdesign.com"
-  spec.license       = "Mine"
+  spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
