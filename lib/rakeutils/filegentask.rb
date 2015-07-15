@@ -14,23 +14,23 @@ require 'ktutils/parse_template'
 
 class DataFile
 
-  attr_accessor :rootDir
+  attr_accessor :root_dir
 
-  def initialize(rootDir = nil)
-    @rootDir = rootDir
+  def initialize(rootdir = nil)
+    @root_dir = rootdir
 
-    if( rootDir )
-      @rootDir = File.rubypath(@rootDir)
-      if( !File.exists?(@rootDir))
-        FileUtils.mkdir(@rootDir)
+    if( rootdir )
+      @root_dir = File.rubypath(@root_dir)
+      if( !File.exists?(@root_dir))
+        FileUtils.mkdir(@root_dir)
       end
     end
   end
 
   def write(filename, data)
     filepath = filename
-    if( @rootDir )
-      filepath = File.join(@rootDir, filename)
+    if( root_dir )
+      filepath = File.join(root_dir, filename)
     end
 
     open(filepath, 'w') { |f| YAML.dump(data, f) }
@@ -38,8 +38,8 @@ class DataFile
 
   def read(filename)
     filepath = filename
-    if( @rootDir )
-      filepath = File.join(@rootDir, filename)
+    if( root_dir )
+      filepath = File.join(root_dir, filename)
     end
 
     data = {}
@@ -59,19 +59,19 @@ class FileGenTask
   def initialize(verbose=false)
     @src = ""
     @dest = ""
-    @dataFile = ""
-    @startDelim = "@"
-    @stopDelim = "@"
+    @data_file = ""
+    @start_delim = "@"
+    @stop_delim = "@"
     @verbose = verbose
   end
 
   # Set token delimiters
   # start:: start delimiter char
   # stop:: stop delimiter char
-  def setDelimeters(start, stop)
-    @startDelim = start
-    @stopDelim = stop
-    puts "FileGenTask: Setting token delimeters to #{@startDelim}, #{@stopDelim}" if @verbose
+  def set_delimiters(start, stop)
+    @start_delim = start
+    @stop_delim = stop
+    puts "FileGenTask: Setting token delimeters to #{@start_delim}, #{@stop_delim}" if @verbose
   end
 
   # Generate files.
@@ -81,7 +81,7 @@ class FileGenTask
   def generate(src, dest, data)
     puts "FileGenTask: Generating file [ #{dest} ] from [ #{src} ]" if @verbose
     if(data.class == String)
-      loadData(data)
+      load_data(data)
     else
       if( data.class != Hash )
         puts "* ERROR: FileGenTask::generate - data must be string (YML filename) or hash *"
@@ -90,22 +90,22 @@ class FileGenTask
       @data = data
     end
 
-    parseSrcTo( src, dest )
+    parse_src_to( src, dest )
   end
 
   # Load data from YAML based data file.
-  # dataFile:: name/path of YAML based data file
-  def loadData(dataFile)
-    puts "FileGenTask: Loading data from YML file [ #{dataFile} ]" if @verbose
+  # data_file:: name/path of YAML based data file
+  def load_data(data_file)
+    puts "FileGenTask: Loading data from YML file [ #{data_file} ]" if @verbose
     df = DataFile.new
-    @data = df.read( dataFile )
+    @data = df.read( data_file )
   end
 
   # Parse the source file and create the destination file.
   # src:: source template file
   # dest:: Destination filename and path
-  def parseSrcTo(src, dest)
-    pt = Ktutils::ParseTemplate.new(@startDelim, @stopDelim)
+  def parse_src_to(src, dest)
+    pt = Ktutils::ParseTemplate.new(@start_delim, @stop_delim)
 
     @data.each do |t, v|
       pt.add_token( t, v )

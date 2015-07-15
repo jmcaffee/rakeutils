@@ -67,19 +67,19 @@ include FileUtils
 
   # Set the output filename.
   # filename:: string name of output file. Default = input filename with .jj suffix.
-  def outputFile(filename)
+  def output_file(filename)
     @output_file = filename
   end
 
   # Set the output directory.
   # pathname:: string path of output directory. Default = current directory.
-  def outputDir(pathname)
+  def output_dir(pathname)
     @output_dir = pathname
   end
 
   # Generate javacc grammar file based on JJTree grammar description file.
   # grammar:: grammar description file (.jjt)
-  def generateFrom(grammar)
+  def generate_from(grammar)
     puts "Generating JavaCC grammar from: #{grammar}"
 
     # Note: jjtree help states that args can be supplied using either of
@@ -95,10 +95,6 @@ include FileUtils
     options << "-STATIC:#{@static}" unless @static.empty?
     options << "-OUTPUT_FILE:#{@output_file}" unless @output_file.empty?
     options << "-OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
-    #cmd_line = ""
-    #cmd_line = cmd_line + "-STATIC:#{@static}" unless @static.empty?
-    #cmd_line = cmd_line + " -OUTPUT_FILE:#{@output_file}" unless @output_file.empty?
-    #cmd_line = cmd_line + " -OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
 
     cmd_line = options.join(' ') + " #{grammar}"
 

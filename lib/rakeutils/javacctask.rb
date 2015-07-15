@@ -66,19 +66,19 @@ include FileUtils
 
   # Set the lookahead depth.
   # look_ahead:: string; depth of lookahead. Default = 1.
-  def outputFile(look_ahead)
+  def output_file(look_ahead)
     @look_ahead = look_ahead.to_s
   end
 
   # Set the output directory.
   # pathname:: string; path of output directory. Default = current directory.
-  def outputDir(pathname)
+  def output_dir(pathname)
     @output_dir = pathname
   end
 
   # Generate java classes based on JavaCC grammar description file.
   # grammar:: grammar description file (.jj)
-  def generateFrom(grammar)
+  def generate_from(grammar)
     puts "Generating Java classes based on grammar file: #{grammar}"
 
     # Note: javacc help states that args can be supplied using either of
@@ -94,10 +94,6 @@ include FileUtils
     options << "-STATIC:#{@static}" unless @static.empty?
     options << "-LOOKAHEAD:#{@look_ahead}" unless @look_ahead.empty?
     options << "-OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
-    #cmd_line = ""
-    #cmd_line = cmd_line + "-STATIC:#{@static}" unless @static.empty?
-    #cmd_line = cmd_line + " -LOOKAHEAD:#{@look_ahead}" unless @look_ahead.empty?
-    #cmd_line = cmd_line + " -OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
 
     cmd_line = options.join(' ') + " #{grammar}"
 
