@@ -36,6 +36,14 @@ require "rakeutils/versioninc"
 require "rakeutils/ziptask"
 ```
 
+## TODOs
+
+This gem was created quite a while ago and I used java naming conventions when
+it was written.
+
+- TODO: Refactor all remaining identifiers to ruby naming conventions.
+
+
 ## Bugs/Questions/Get Help
 
 Create an issue at [https://github.com/jmcaffee/rakeutils/issues](https://github.com/jmcaffee/rakeutils/issues).
