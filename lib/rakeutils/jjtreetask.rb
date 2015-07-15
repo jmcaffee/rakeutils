@@ -23,41 +23,58 @@ require_relative 'clapp'
 class JJTreeTask < CLApp
 include FileUtils
 
-  if Ktutils::OS.windows?
-    APP_PATH = "M:/javacc/bin/jjtree.bat"
-  else
-    APP_PATH = `which jjtree`.chomp
-  end
-
   # Constructor
   def initialize()
-    super( APP_PATH )   # Call parent constructor.
+    super( find_app )   # Call parent constructor.
+
+    app_path = find_app
+    if app_path.nil? or app_path.empty? or !File.exist?(app_path)
+      if Ktutils::OS.windows?
+        msg = "JAVACC_HOME environment variable is not configured correctly "
+        msg += "or JavaCC is not installed."
+        msg += "\njjtree.bat not found"
+        raise msg
+      else
+        raise "jjtree not found"
+      end
+    end
 
     @static = ""
-    @outputFile = ""
-    @outputDir = ""
+    @output_file = ""
+    @output_dir = ""
   end # initialize
 
+  def find_app
+    if Ktutils::OS.windows?
+      app_home = ENV["JAVACC_HOME"]
+      unless app_home.nil? or app_home.empty?
+        app_path = File.join(app_home, "bin", "jjtree.bat")
+      end
+    else
+      app_path = `which jjtree`.chomp
+    end
+  end
+
   # Set the static class generation flag.
-  # trueOrFalse:: string value (true or false). Default = true.
-  def static(trueOrFalse)
-    if (trueOrFalse != 'true' && trueOrFalse != 'false')
+  # true_or_false:: string value (true or false). Default = true.
+  def static(true_or_false)
+    if (true_or_false != 'true' && true_or_false != 'false')
       puts "JJTreeTask Error: static must be string value ('true' or 'false')"
       return
     end
-    @static = trueOrFalse.to_s
+    @static = true_or_false.to_s
   end
 
   # Set the output filename.
   # filename:: string name of output file. Default = input filename with .jj suffix.
   def outputFile(filename)
-    @outputFile = filename
+    @output_file = filename
   end
 
   # Set the output directory.
   # pathname:: string path of output directory. Default = current directory.
   def outputDir(pathname)
-    @outputDir = pathname
+    @output_dir = pathname
   end
 
   # Generate javacc grammar file based on JJTree grammar description file.
@@ -74,15 +91,19 @@ include FileUtils
     #       passed with '='.
     #
     #       Use form -OPTION: instead.
-    cmdLine = ""
-    cmdLine = cmdLine + "-STATIC:#{@static}" unless @static.empty?
-    cmdLine = cmdLine + " -OUTPUT_FILE:#{@outputFile}" unless @outputFile.empty?
-    cmdLine = cmdLine + " -OUTPUT_DIRECTORY:#{@outputDir}" unless @outputDir.empty?
+    options = []
+    options << "-STATIC:#{@static}" unless @static.empty?
+    options << "-OUTPUT_FILE:#{@output_file}" unless @output_file.empty?
+    options << "-OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
+    #cmd_line = ""
+    #cmd_line = cmd_line + "-STATIC:#{@static}" unless @static.empty?
+    #cmd_line = cmd_line + " -OUTPUT_FILE:#{@output_file}" unless @output_file.empty?
+    #cmd_line = cmd_line + " -OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
 
-    cmdLine = cmdLine + " #{grammar}"
+    cmd_line = options.join(' ') + " #{grammar}"
 
     begin
-        execute( cmdLine, false )
+        execute( cmd_line, false )
     rescue Exception => e
         puts "!!! Errors occured during parsing of JJTree grammar."
         puts e.message

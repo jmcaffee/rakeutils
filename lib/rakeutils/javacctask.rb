@@ -29,9 +29,10 @@ include FileUtils
     app_path = find_app
     if app_path.nil? or app_path.empty? or !File.exist?(app_path)
       if Ktutils::OS.windows?
-        $stdout << "JAVACC_HOME environment variable is not configured correctly"
-        $stdout << "or JavaCC is not installed."
-        raise "javacc not found"
+        msg = "JAVACC_HOME environment variable is not configured correctly "
+        msg += "or JavaCC is not installed."
+        msg += "\njavacc.bat not found"
+        raise msg
       else
         raise "javacc not found"
       end
@@ -44,9 +45,9 @@ include FileUtils
 
   def find_app
     if Ktutils::OS.windows?
-      javacc_home = ENV["JAVACC_HOME"]
-      unless javacc_home.nil? or javacc_home.empty?
-        app_path = File.join(javacc_home, "bin", "javacc.bat")
+      app_home = ENV["JAVACC_HOME"]
+      unless app_home.nil? or app_home.empty?
+        app_path = File.join(app_home, "bin", "javacc.bat")
       end
     else
       app_path = `which javacc`.chomp
@@ -54,19 +55,19 @@ include FileUtils
   end
 
   # Set the static class generation flag.
-  # trueOrFalse:: string; value (true or false). Default = true.
-  def static(trueOrFalse)
-    if (trueOrFalse != 'true' && trueOrFalse != 'false')
+  # true_or_false:: string; value (true or false). Default = true.
+  def static(true_or_false)
+    if (true_or_false != 'true' && true_or_false != 'false')
       puts "JJTreeTask Error: static must be string value ('true' or 'false')"
       return
     end
-    @static = trueOrFalse
+    @static = true_or_false
   end
 
   # Set the lookahead depth.
-  # lookAhead:: string; depth of lookahead. Default = 1.
-  def outputFile(lookAhead)
-    @look_ahead = lookAhead.to_s
+  # look_ahead:: string; depth of lookahead. Default = 1.
+  def outputFile(look_ahead)
+    @look_ahead = look_ahead.to_s
   end
 
   # Set the output directory.
@@ -89,17 +90,23 @@ include FileUtils
     #       passed with '='.
     #
     #       Use form -OPTION: instead.
-    cmdLine = ""
-    cmdLine = cmdLine + "-STATIC:#{@static}" unless @static.empty?
-    cmdLine = cmdLine + " -LOOKAHEAD:#{@look_ahead}" unless @look_ahead.empty?
-    cmdLine = cmdLine + " -OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
+    options = []
+    options << "-STATIC:#{@static}" unless @static.empty?
+    options << "-LOOKAHEAD:#{@look_ahead}" unless @look_ahead.empty?
+    options << "-OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
+    #cmd_line = ""
+    #cmd_line = cmd_line + "-STATIC:#{@static}" unless @static.empty?
+    #cmd_line = cmd_line + " -LOOKAHEAD:#{@look_ahead}" unless @look_ahead.empty?
+    #cmd_line = cmd_line + " -OUTPUT_DIRECTORY:#{@output_dir}" unless @output_dir.empty?
 
-    cmdLine = cmdLine + " #{grammar}"
+    cmd_line = options.join(' ') + " #{grammar}"
 
     begin
-        execute( cmdLine, false )
-    rescue
+        execute( cmd_line, false )
+    rescue Exception => e
         puts "!!! Errors occured during parsing of JavaCC grammar."
+        puts e.message
+        #exit
     end
   end # generate
 end # class JavaCCTask

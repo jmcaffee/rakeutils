@@ -74,18 +74,18 @@ class CLApp
   end # windowize_path
 
   # Execute application.
-  # cmdLine:: Command line to pass to the application
-  # canThrow:: If true, throw exception if command fails.
+  # cmd_line:: Command line to pass to the application
+  # can_throw:: If true, throw exception if command fails.
   # throws:: Exception if command failed. 
-  def execute(cmdLine, canThrow=true)
-    appCmd = "#{@app_path} #{cmdLine}"
-    puts "Executing: #{appCmd}"
+  def execute(cmd_line, can_throw=true)
+    app_cmd = "#{@app_path} #{cmd_line}"
+    puts "Executing: #{app_cmd}"
     if( !File.exists?(@app_path) )
       raise "Invalid application path: #{@app_path}"
     end
 
-    if( !Kernel.system("#{appCmd}") && canThrow )
-        raise "Application threw an exception for the command: ".concat(appCmd)
+    if( !Kernel.system("#{app_cmd}") && can_throw )
+        raise "Application threw an exception for the command: ".concat(app_cmd)
     end
   end # execute
 end # class CLApp

@@ -1,28 +1,28 @@
-require 'rakeutils/javacctask'
+require 'rakeutils/jjtreetask'
 
-describe JavaCCTask do
+describe JJTreeTask do
 
   context '#new' do
 
-    it "raises an exception if JavaCC is not installed" do
-      JavaCCTask
+    it "raises an exception if JJTree is not installed" do
+      JJTreeTask
         .any_instance
         .should_receive(:find_app)
         .twice
         .and_return ""
 
-      expect { JavaCCTask.new }.to raise_error
+      expect { JJTreeTask.new }.to raise_error
     end
 
-    it "doesn't raise an exception if JavaCC is installed" do
+    it "doesn't raise an exception if JJTree is installed" do
       # Note: the file/directory has to exist or the ctor will fail anyway.
-      JavaCCTask
+      JJTreeTask
         .any_instance
         .should_receive(:find_app)
         .twice
         .and_return "/tmp"
 
-      expect { JavaCCTask.new }.not_to raise_error
+      expect { JJTreeTask.new }.not_to raise_error
     end
 
   end
