@@ -21,16 +21,19 @@ require_relative 'clapp'
 class OcraTask < CLApp
 include FileUtils
 
-  if Ktutils::OS.windows?
-    APP_PATH = "N:/Ruby/bin/ruby.exe"
-  else
-    APP_PATH = `which ruby`.chomp
-  end
-
   # Constructor
   def initialize()
-    super( APP_PATH )   # Call parent constructor.
+    super( find_app )
   end # initialize
+
+  def find_app
+    if Ktutils::OS.windows?
+      # We expect that ruby is on the user's PATH.
+      app_home = "ruby.exe"
+    else
+      raise "cannot use OCRA on linux based systems"
+    end
+  end
 
   # Generate executable application from a ruby script.Compile setup script.
   # script:: Script to be compiled

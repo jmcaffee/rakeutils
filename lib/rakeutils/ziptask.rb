@@ -20,44 +20,56 @@ require_relative 'clapp'
 class ZipTask < CLApp
 include FileUtils
 
-    APP_PATH = "M:/7Zip/7za.exe"
+  # Constructor
+  def initialize()
+    super( find_app )
 
-  
-    # Constructor
-    def initialize()
-        super( APP_PATH )   # Call parent constructor.
-    end # initialize
+    app_path = find_app
+    if app_path.nil? or app_path.empty?
+      if Ktutils::OS.windows?
+        raise "7Zip is not installed"
+      else
+        raise "7z not found"
+      end
+    end
+  end # initialize
 
+  def find_app
+    if Ktutils::OS.windows?
+      app_home = "7za.exe"
+    else
+      app_path = `which 7z`.chomp
+    end
+  end
 
-    # Compress all files within a directory.
-    # srcPath:: Source directory. Path must use forward slashes.
-    # archivePath:: Destination file. Path must use forward slashes.
-    def compress(srcPath, archivePath)
-        srcDir = File.dirname( File.expand_path( srcPath ) )
-        srcFile = File.basename( srcPath )
-        archivePath = File.expand_path( archivePath )
-        destDir = File.dirname( archivePath )
-        
-        puts "srcDir: #{srcDir}"
-        puts "srcPath: #{srcPath}"
-        puts "destDir: #{destDir}"
-        puts "archivePath: #{archivePath}"
-        
-        if( !File.exists?( destDir ) )          # Create the destination dir if it doesn't exits.
-            File.makedirs( destDir, true )
-        end
-        
-        cmdLine = "-tzip u #{archivePath} #{srcPath}"
+  # Compress all files within a directory.
+  # src_path:: Source directory. Path must use forward slashes.
+  # archive_path:: Destination file. Path must use forward slashes.
+  def compress(src_path, archive_path)
+    src_dir = File.dirname( File.expand_path( src_path ) )
+    src_file = File.basename( src_path )
+    archive_path = File.expand_path( archive_path )
+    dest_dir = File.dirname( archive_path )
 
-        curDir = pwd
-        cd( srcDir )
-            begin
-                execute( cmdLine, false )
-            rescue
-                # do nothing
-            end
-        cd( curDir )
-    end # compress
+    puts "src_dir: #{src_dir}"
+    puts "src_path: #{src_path}"
+    puts "dest_dir: #{dest_dir}"
+    puts "archive_path: #{archive_path}"
 
+    # Create the destination dir if it doesn't exist.
+    if( !File.exists?( dest_dir ) )
+      File.makedirs( dest_dir, true )
+    end
 
+    cmd_line = "-tzip u #{archive_path} #{src_path}"
+
+    cur_dir = pwd
+    cd( src_dir )
+      begin
+        execute( cmd_line, false )
+      rescue
+        # do nothing
+      end
+    cd( cur_dir )
+  end # compress
 end # class ZipTask

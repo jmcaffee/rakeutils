@@ -19,44 +19,52 @@ require_relative 'clapp'
 class Tex2Rtf < CLApp
 include FileUtils
 
-    APP_PATH = "M:/Tex2RTF/tex2rtf.exe"
+  #APP_PATH = "M:/Tex2RTF/tex2rtf.exe"
 
-  
-    # Constructor
-    def initialize()
-        super( APP_PATH )   # Call parent constructor.
-    end # initialize
+  # Constructor
+  def initialize()
+    super( find_app )
+  end # initialize
 
+  def find_app
+    if Ktutils::OS.windows?
+      app_home = ENV["TEX2RTF_HOME"]
+      unless app_home.nil? or app_home.empty?
+        app_path = File.join(app_home, "tex2rtf.exe")
+      end
+    else
+      raise "cannot use tex2rtf on linux based systems"
+    end
+  end
 
-    # Generate help files.
-    # srcPath:: Source file [.tex]. Path must use forward slashes.
-    # destPath:: Destination file. Path must use forward slashes.
-    def generateHelpFiles(srcPath, destPath)
-        srcDir = File.dirname( File.expand_path( srcPath ) )
-        srcFile = File.basename( srcPath )
-        destPath = File.expand_path( destPath )
-        destDir = File.dirname( destPath )
-        
-        puts "srcDir: #{srcDir}"
-        puts "srcPath: #{srcPath}"
-        puts "destDir: #{destDir}"
-        puts "destPath: #{destPath}"
-        
-        if( !File.exists?( destDir ) )          # Create the destination dir if it doesn't exits.
-            File.makedirs( destDir, true )
-        end
-        
-        cmdLine = "#{srcFile} #{destPath} -checkcurleybraces -checksyntax -html"
+  # Generate help files.
+  # src_path:: Source file [.tex]. Path must use forward slashes.
+  # dest_path:: Destination file. Path must use forward slashes.
+  def generate_help_files(src_path, dest_path)
+    src_dir = File.dirname( File.expand_path( src_path ) )
+    src_file = File.basename( src_path )
+    dest_path = File.expand_path( dest_path )
+    dest_dir = File.dirname( dest_path )
 
-        curDir = pwd
-        cd( srcDir )
-            begin
-                execute( cmdLine, false )
-            rescue
-                # do nothing
-            end
-        cd( curDir )
-    end # generateHelpFiles
+    puts "src_dir: #{src_dir}"
+    puts "src_path: #{src_path}"
+    puts "dest_dir: #{dest_dir}"
+    puts "dest_path: #{dest_path}"
 
+    # Create the destination dir if it doesn't exits.
+    if( !File.exists?( dest_dir ) )
+      File.makedirs( dest_dir, true )
+    end
 
+    cmd_line = "#{src_file} #{dest_path} -checkcurleybraces -checksyntax -html"
+
+    cur_dir = pwd
+    cd( src_dir )
+      begin
+        execute( cmd_line, false )
+      rescue
+        # do nothing
+      end
+    cd( cur_dir )
+  end # generate_help_files
 end # class Tex2Rtf
