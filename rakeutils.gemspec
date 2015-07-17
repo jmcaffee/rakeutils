@@ -9,9 +9,9 @@ Gem::Specification.new do |spec|
   spec.version       = RakeUtils::VERSION
   spec.authors       = ["Jeff McAffee"]
   spec.email         = ["jeff@ktechsystems.com"]
-  spec.description   = %q{Rake Utility classes}
-  spec.summary       = %q{Rake Utility classes}
-  spec.homepage      = "http://gems.ktechdesign.com"
+  spec.description   = %q{Rake task classes for 3rd party apps}
+  spec.summary       = spec.description
+  spec.homepage      = "https://github.com/jmcaffee/rakeutils"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)

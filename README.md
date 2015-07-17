@@ -57,7 +57,7 @@ From the root project dir, run:
 ## Contributing
 
 1. Fork it ( https://github.com/jmcaffee/rakeutils/fork )
-2. Clone it (`git clone git@github.com:[my-github-username]/ktutils.git`)
+2. Clone it (`git clone git@github.com:[my-github-username]/rakeutils.git`)
 3. Create your feature branch (`git checkout -b my-new-feature`)
 4. Create your tests
 5. Commit your changes (`git commit -am 'Add some feature'`)
